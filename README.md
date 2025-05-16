@@ -10,10 +10,12 @@ A: Immediately notify your team lead or repo administrator.
 
 How do I push my code? 
 
-A:    git add. 
-        git commit –m “your message” 
-        git push origin your-branch-name 
+A:
+git remote add upstream https://github.com/SBNA-Game-Show/GameShow.git     
 
+git pull upstream your-branch-name --allow-unrelated-histories 
+
+git push upstream your-branch-name 
  
 
 Where should we put our documentation? 
