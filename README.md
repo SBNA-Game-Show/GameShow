@@ -10,9 +10,10 @@ A: Immediately notify your team lead or repo administrator.
 
 How do I push my code? 
 
-A:    git add. 
-        git commit –m “your message” 
-        git push origin your-branch-name 
+A:   
+git add. 
+git commit –m “your message” 
+git push origin your-branch-name 
 
  
 
