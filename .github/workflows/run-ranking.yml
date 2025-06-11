@@ -2,8 +2,9 @@
 name: Run Survey Ranking
  
 on:
-  workflow_dispatch:  # <-- Enables manual button in GitHub UI
- 
+ push:
+    branches:
+      - 404-Not-Found-Analytics
 jobs:
   run-ranking:
     runs-on: ubuntu-latest
