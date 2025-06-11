@@ -1,1 +1,33 @@
 
+name: Run Survey Ranking
+ 
+on:
+  workflow_dispatch:  # <-- Enables manual button in GitHub UI
+ 
+jobs:
+  run-ranking:
+    runs-on: ubuntu-latest
+ 
+    env:
+      API_BASE_URL: ${{ secrets.API_BASE_URL }}
+      API_KEY: ${{ secrets.API_KEY }}
+      API_ENDPOINT: ${{ secrets.API_ENDPOINT }}
+      SIMILARITY_THRESHOLD: 0.75
+      LOG_LEVEL: INFO
+      FLASK_PORT: 5000
+      FLASK_DEBUG: false
+ 
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+ 
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+ 
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+ 
+      - name: Run ranking processor
+        run: python ranking_processor.py
