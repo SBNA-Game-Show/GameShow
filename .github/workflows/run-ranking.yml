@@ -3,6 +3,7 @@ name: Run Survey Ranking
  
 on:
  workflow_dispatch:
+ 
 jobs:
   run-ranking:
     runs-on: ubuntu-latest
