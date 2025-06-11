@@ -2,9 +2,7 @@
 name: Run Survey Ranking
  
 on:
- push:
-    branches:
-      - 404-Not-Found-Analytics
+ workflow_dispatch:
 jobs:
   run-ranking:
     runs-on: ubuntu-latest
