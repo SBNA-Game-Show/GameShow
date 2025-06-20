@@ -248,7 +248,7 @@ export const PreviewModal: React.FC<PreviewModalProps> = ({
                 </span>
                 <span className="text-sm text-gray-600">
                   {mode === "create" 
-                    ? "Use the header 'Save Questions' button to create these questions" 
+                    ? "Use the header 'Save Questions' button to add these questions" 
                     : "Use the header 'Save Changes' button to update these questions"
                   }
                 </span>
