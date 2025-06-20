@@ -229,7 +229,7 @@ const AnalyticsPage: React.FC<AnalyticsPageProps> = ({
           </h3>
           <p className="text-blue-700 mb-4">
             There are no questions in your survey database yet. You need to
-            create some questions before you can view analytics.
+            Add some questions before you can view analytics.
           </p>
           <div className="space-y-3">
             <button
