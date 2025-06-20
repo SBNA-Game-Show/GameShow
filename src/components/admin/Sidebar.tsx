@@ -55,7 +55,7 @@ export function Sidebar({
           <h3 className="text-lg font-bold text-gray-900">Question Bank</h3>
           {mode === "create" && (
             <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
-              CREATE MODE
+              ADD MODE
             </span>
           )}
         </div>
