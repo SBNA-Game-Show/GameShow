@@ -1,4 +1,4 @@
-// Enhanced ResponsesPage.tsx - Added rank and score display in validation modal
+// Enhanced ResponsesPage.tsx - Added Correct Answers column to responses table
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Question } from "../../types/types";
@@ -77,6 +77,20 @@ const ResponsesPage: React.FC = () => {
   }, [navigate]);
 
   const analyticsData = useAnalyticsData(questions);
+
+  // Function to calculate correct answers for a question
+  const getCorrectAnswersCount = (question: Question): number => {
+    if (!question.answers || !Array.isArray(question.answers)) {
+      return 0;
+    }
+    
+    return question.answers.reduce((count, answer) => {
+      if (answer.isCorrect === true) {
+        return count + (answer.responseCount || 1);
+      }
+      return count;
+    }, 0);
+  };
 
   // Function to handle answer validation button click
   const handleValidateAnswers = (question: Question) => {
@@ -181,6 +195,10 @@ const ResponsesPage: React.FC = () => {
             aValue = analyticsData.answerCounts[a.questionID] || 0;
             bValue = analyticsData.answerCounts[b.questionID] || 0;
             break;
+          case "correct":
+            aValue = getCorrectAnswersCount(a);
+            bValue = getCorrectAnswersCount(b);
+            break;
           case "skipped":
             aValue = analyticsData.skipCounts[a.questionID] || 0;
             bValue = analyticsData.skipCounts[b.questionID] || 0;
@@ -231,6 +249,9 @@ const ResponsesPage: React.FC = () => {
   const levels = [...new Set(questions.map((q) => q.questionLevel))].filter(
     Boolean
   );
+
+  // Calculate total correct answers for summary
+  const totalCorrectAnswers = questions.reduce((sum, q) => sum + getCorrectAnswersCount(q), 0);
 
   if (loading) {
     return (
@@ -435,7 +456,7 @@ const ResponsesPage: React.FC = () => {
             <h3 className="text-xl font-semibold mb-4">Responses Table</h3>
 
             <div className="mb-4 p-4 bg-gray-50 rounded-lg">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
                 <div>
                   <span className="font-medium text-gray-700">
                     Total Questions:
@@ -453,6 +474,14 @@ const ResponsesPage: React.FC = () => {
                       (sum, count) => sum + count,
                       0
                     )}
+                  </span>
+                </div>
+                <div>
+                  <span className="font-medium text-gray-700">
+                    Correct Answers:
+                  </span>
+                  <span className="ml-2 font-bold text-blue-600">
+                    {totalCorrectAnswers}
                   </span>
                 </div>
                 <div>
@@ -504,6 +533,15 @@ const ResponsesPage: React.FC = () => {
                     </div>
                   </th>
                   <th
+                    className="px-3 py-2 font-semibold text-blue-700 cursor-pointer hover:bg-purple-200 transition-colors"
+                    onClick={() => handleSort("correct")}
+                  >
+                    <div className="flex items-center justify-between">
+                      Correct
+                      <SortIndicator field="correct" />
+                    </div>
+                  </th>
+                  <th
                     className="px-3 py-2 font-semibold text-amber-700 cursor-pointer hover:bg-purple-200 transition-colors"
                     onClick={() => handleSort("skipped")}
                   >
@@ -536,7 +574,7 @@ const ResponsesPage: React.FC = () => {
               <tbody>
                 {filteredAndSortedQuestions.length === 0 ? (
                   <tr>
-                    <td colSpan={9} className="text-center py-8 text-gray-500">
+                    <td colSpan={10} className="text-center py-8 text-gray-500">
                       No questions found. Questions need to be added to see
                       analytics.
                     </td>
@@ -545,6 +583,7 @@ const ResponsesPage: React.FC = () => {
                   filteredAndSortedQuestions.map((q, index) => {
                     const answeredQ =
                       analyticsData.answerCounts[q.questionID] || 0;
+                    const correctQ = getCorrectAnswersCount(q);
                     const skippedQ =
                       analyticsData.skipCounts[q.questionID] || 0;
                     const totalQ = answeredQ + skippedQ;
@@ -605,6 +644,14 @@ const ResponsesPage: React.FC = () => {
                             <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                             <span className="font-medium text-green-700">
                               {answeredQ}
+                            </span>
+                          </span>
+                        </td>
+                        <td className="px-3 py-2">
+                          <span className="inline-flex items-center gap-1">
+                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            <span className="font-medium text-blue-700">
+                              {correctQ}
                             </span>
                           </span>
                         </td>
